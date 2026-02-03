@@ -8,7 +8,6 @@ import {
   IconChevronRight,
   IconLayoutGrid,
   IconMail,
-  IconPhone,
   IconPlayerPlay,
   IconPhoto,
   IconSpeakerphone,
