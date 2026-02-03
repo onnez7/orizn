@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import {
   IconArrowNarrowRight,
   IconBrandInstagram,
@@ -241,6 +241,9 @@ const translations = {
       emailPlaceholder: 'seuemail@email.com',
       projectPlaceholder: 'Descreva seu projeto',
       button: 'Solicitar Orçamento',
+      sendingLabel: 'Enviando...',
+      successMessage: 'Mensagem enviada com sucesso.',
+      errorMessage: 'Não foi possível enviar. Tente novamente.',
     },
     footer: {
       description:
@@ -446,6 +449,9 @@ const translations = {
       emailPlaceholder: 'you@email.com',
       projectPlaceholder: 'Describe your project',
       button: 'Request a Quote',
+      sendingLabel: 'Sending...',
+      successMessage: 'Message sent successfully.',
+      errorMessage: 'Unable to send. Please try again.',
     },
     footer: {
       description:
@@ -596,6 +602,7 @@ function App() {
   })
   const [activeVideo, setActiveVideo] = useState<Video | null>(null)
   const [activeThumbnail, setActiveThumbnail] = useState<string | null>(null)
+  const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const embedUrl = activeVideo ? toEmbedUrl(activeVideo.url) : null
   const isShortVideo = activeVideo?.kind === 'short'
   const copy = translations[language]
@@ -620,6 +627,34 @@ function App() {
     const detected = navigator.language.toLowerCase().startsWith('pt') ? 'pt' : 'en'
     setLanguage(detected)
   }, [])
+
+  const handleContactSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (formStatus === 'sending') return
+
+    const form = event.currentTarget
+    const formData = new FormData(form)
+    const payload = Object.fromEntries(formData.entries())
+
+    try {
+      setFormStatus('sending')
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        throw new Error('Request failed')
+      }
+
+      setFormStatus('success')
+      form.reset()
+    } catch (error) {
+      console.error(error)
+      setFormStatus('error')
+    }
+  }
 
   return (
     <div className="bg-white font-poppins text-[#021024]">
@@ -1063,8 +1098,7 @@ function App() {
                 </div>
                 <form
                   className="rounded-2xl bg-white p-6 text-[#021024] shadow-xl"
-                  action="https://formspree.io/f/xjgoqbva"
-                  method="post"
+                  onSubmit={handleContactSubmit}
                 >
                   <div className="grid gap-4">
                     <label className="text-[10px] font-semibold uppercase text-[#021024]/70">
@@ -1095,10 +1129,23 @@ function App() {
                     </label>
                     <button
                       type="submit"
-                      className="w-full rounded-xl bg-[#005aff] px-4 py-3 text-xs font-semibold text-white transition hover:brightness-110"
+                      className="w-full rounded-xl bg-[#005aff] px-4 py-3 text-xs font-semibold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
+                      disabled={formStatus === 'sending'}
                     >
-                      {copy.contact.button}
+                      {formStatus === 'sending'
+                        ? copy.contact.sendingLabel
+                        : copy.contact.button}
                     </button>
+                    {formStatus === 'success' ? (
+                      <p className="text-xs text-[#005aff]">
+                        {copy.contact.successMessage}
+                      </p>
+                    ) : null}
+                    {formStatus === 'error' ? (
+                      <p className="text-xs text-red-600">
+                        {copy.contact.errorMessage}
+                      </p>
+                    ) : null}
                   </div>
                 </form>
               </div>
