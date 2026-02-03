@@ -20,6 +20,15 @@ import beatrizBitti from './assets/BeatrizBitti.jpg'
 import logo from './assets/logo.svg'
 import thumbnailImage from './assets/Thumbnails.jpg'
 
+type VideoKind = 'long' | 'short'
+
+type Video = {
+  id: string
+  url: string
+  kind: VideoKind
+  thumbnail?: string
+}
+
 const navLinks = [
   { label: 'Serviço', href: '#servicos' },
   { label: 'Processo', href: '#processo' },
@@ -71,7 +80,7 @@ const thumbnails = Array.from({ length: 8 }, (_, index) => ({
   id: `thumb-${index + 1}`,
 }))
 
-const longVideos = [
+const longVideos: Video[] = [
   {
     id: 'long-1',
     url: 'https://www.youtube.com/watch?v=ynsOIyb-qG0',
@@ -90,7 +99,7 @@ const longVideos = [
   },
 ]
 
-const shortVideos = Array.from({ length: 6 }, (_, index) => ({
+const shortVideos: Video[] = Array.from({ length: 6 }, (_, index): Video => ({
   id: `short-${index + 1}`,
   url: 'https://www.youtube.com/shorts/Cq-7lFMNESk',
   kind: 'short',
@@ -210,10 +219,7 @@ const toEmbedUrl = (url: string) => {
 
 function App() {
   const reviewsRef = useRef<HTMLDivElement | null>(null)
-  const [activeVideo, setActiveVideo] = useState<{
-    url: string
-    kind: 'long' | 'short'
-  } | null>(null)
+  const [activeVideo, setActiveVideo] = useState<Video | null>(null)
   const [activeThumbnail, setActiveThumbnail] = useState<string | null>(null)
   const embedUrl = activeVideo ? toEmbedUrl(activeVideo.url) : null
   const isShortVideo = activeVideo?.kind === 'short'
