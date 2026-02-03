@@ -1063,15 +1063,15 @@ function App() {
                 </div>
                 <form
                   className="rounded-2xl bg-white p-6 text-[#021024] shadow-xl"
-                  action="mailto:orizn.studio@gmail.com"
+                  action="https://formspree.io/f/xjgoqbva"
                   method="post"
-                  encType="text/plain"
                 >
                   <div className="grid gap-4">
                     <label className="text-[10px] font-semibold uppercase text-[#021024]/70">
                       {copy.contact.nameLabel}
                       <input
                         type="text"
+                        name="name"
                         className="mt-2 w-full rounded-xl border border-[#021024]/10 bg-[#f9fafb] px-4 py-2 text-xs outline-none focus:border-[#005aff]"
                         placeholder={copy.contact.namePlaceholder}
                       />
@@ -1080,6 +1080,7 @@ function App() {
                       {copy.contact.emailLabel}
                       <input
                         type="email"
+                        name="email"
                         className="mt-2 w-full rounded-xl border border-[#021024]/10 bg-[#f9fafb] px-4 py-2 text-xs outline-none focus:border-[#005aff]"
                         placeholder={copy.contact.emailPlaceholder}
                       />
@@ -1087,6 +1088,7 @@ function App() {
                     <label className="text-[10px] font-semibold uppercase text-[#021024]/70">
                       {copy.contact.projectLabel}
                       <textarea
+                        name="project"
                         className="mt-2 min-h-[120px] w-full rounded-xl border border-[#021024]/10 bg-[#f9fafb] px-4 py-2 text-xs outline-none focus:border-[#005aff]"
                         placeholder={copy.contact.projectPlaceholder}
                       />
