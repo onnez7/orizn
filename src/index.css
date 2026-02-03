@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Sora:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: 'Poppins', ui-sans-serif, system-ui;
+  color: #08142c;
+  background-color: #ffffff;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.grid-canvas {
+  background-image: linear-gradient(
+      90deg,
+      rgba(12, 91, 255, 0.06) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      0deg,
+      rgba(12, 91, 255, 0.06) 1px,
+      transparent 1px
+    );
+  background-size: 44px 44px;
+  background-position: center;
+}
+
+.hero-ring {
+  background: radial-gradient(
+    circle at 20% 20%,
+    rgba(12, 91, 255, 0.15),
+    transparent 55%
+  );
+}
+
+.marquee {
+  display: grid;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.marquee-row {
+  overflow: hidden;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: marquee-left 28s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-row:nth-child(2) .marquee-track {
+  animation-duration: 32s;
+  animation-direction: reverse;
+}
+
+.marquee-card {
+  width: 230px;
+  flex: 0 0 auto;
+  padding: 0;
+  border-radius: 12px;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
